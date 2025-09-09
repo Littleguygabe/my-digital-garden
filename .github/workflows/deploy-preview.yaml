@@ -1,37 +1,44 @@
-name: Upload Preview Deployment
+name: Deploy Quartz to GitHub Pages
 on:
-  workflow_run:
-    workflows: ["Build Preview Deployment"]
-    types:
-      - completed
-
+  push:
+    branches:
+      # This should be your main branch, likely 'v4' or 'main'
+      - v4
 permissions:
-  actions: read
-  deployments: write
   contents: read
-  pull-requests: write
-
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 jobs:
-  deploy-preview:
-    if: ${{ github.repository == 'jackyzha0/quartz' && github.event.workflow_run.conclusion == 'success' }}
+  build:
     runs-on: ubuntu-latest
-    name: Deploy Preview to Cloudflare Pages
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v5
-        id: preview-build-artifact
+      - uses: actions/checkout@v4
         with:
-          name: preview-build
-          path: build
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
+          fetch-depth: 0 # Fetch all history for git info
+      - name: "Setup Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: "Install Dependencies"
+        run: npm i
+      - name: "Build Quartz"
+        run: npx quartz build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
 
-      - name: Deploy to Cloudflare Pages
-        uses: AdrianGonz97/refined-cf-pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          projectName: quartz
-          deploymentName: Branch Preview
-          directory: ${{ steps.preview-build-artifact.outputs.download-path }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
