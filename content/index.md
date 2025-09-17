@@ -10,5 +10,5 @@ See my [[Projects Directory]] to explore what I've been working on.
 
 ## Useful Links
 [Github](https://github.com/Littleguygabe)
-[LinkedIn](www.linkedin.com/in/gabrielbridger)
+[LinkedIn](https://linkedin.com/in/gabrielbridger)
 [Email](mailto:gabriel.bridger@hotmail.com)
