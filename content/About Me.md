@@ -11,3 +11,7 @@ You can find my resumes through the following links
 ## Projects
 My most recent project - aside from coursework being set by university - has been based on improving my resume for internship applications so they've all been largely based around finance and finding meaningful patterns within stock data. You can find all the documents about my projects in the [[Projects Directory]]
 
+## Useful Links
+[Github](https://github.com/Littleguygabe)
+[LinkedIn](www.linkedin.com/in/gabrielbridger)
+[Email](mailto:gabriel.bridger@hotmail.com)
