@@ -12,3 +12,10 @@ See my [[Projects Directory]] to explore what I've been working on.
 - [Github](https://github.com/Littleguygabe)
 - [LinkedIn](https://linkedin.com/in/gabrielbridger)
 - [Email](mailto:gabriel.bridger@hotmail.com)
+
+## All Project Updates
+
+| Project Name                          | Update Name                                       | Date of Update |
+| ------------------------------------- | ------------------------------------------------- | -------------- |
+| [[Stocks & Shares Trading Algorithm]] | [[Starting to Implement Markov Chains & Regimes]] | 17/9/2025      |
+| [[Stocks & Shares Trading Algorithm]] | [[Improved Back Testing Analytics]]               | 20/9/2025      |
