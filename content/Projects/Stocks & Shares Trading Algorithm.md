@@ -18,6 +18,7 @@ I've now switched to using markov chains and regimes, however this method is sti
 | ------------------------------------------------- | -------------- |
 | [[Starting to Implement Markov Chains & Regimes]] | 17/9/2025      |
 | [[Improved Back Testing Analytics]]               | 20/9/2025      |
+| [[Variable vs Fixed Volatility]]                  | 24/9/2025      |
 
 
 
