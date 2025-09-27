@@ -25,9 +25,7 @@ def getInitialValues(data,n_clusters=2,max_iterations=100):
 	data_min = min(data)	
 	data_max = max(data)
 	
-	node_positions = np.random.uniform(low=data_min,
-										high=data_max,
-										size=(n_clusters,))
+	node_positions = np.random.uniform(low=data_min,high=data_max,size=(n_clusters,))
 	
 	min_cluster_position_change = 0.01
 	
