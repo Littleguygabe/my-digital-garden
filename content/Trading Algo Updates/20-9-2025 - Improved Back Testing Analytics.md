@@ -1,5 +1,3 @@
-**Date - 20/9/2025**
-
 At the moment the backtesting algorithm for the program only works by calculating and mapping the return from the trading algorithm using `matplotlib`. 
 
 ### Data Input

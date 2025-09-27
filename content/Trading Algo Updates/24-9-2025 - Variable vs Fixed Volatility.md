@@ -1,5 +1,3 @@
-**Date - 24/9/2025**
-
 For the last few hours now I've been researching about potentially more effective methods on predicting volatility to be used for the Montecarlo Simulation during which I've effectively come across 2 main ways of generating volatility: Statically (my current approach) and dynamically (through the use of an MSGARCH model rather than just the current MS model)
 
 ### Fixed Volatility

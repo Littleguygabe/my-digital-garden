@@ -14,11 +14,12 @@ I've now switched to using markov chains and regimes, however this method is sti
 
 ### Project Updates
 
-| Update Name                                       | Date of Update |
-| ------------------------------------------------- | -------------- |
-| [[Starting to Implement Markov Chains & Regimes]] | 17/9/2025      |
-| [[Improved Back Testing Analytics]]               | 20/9/2025      |
-| [[Variable vs Fixed Volatility]]                  | 24/9/2025      |
+| Update Name                                                   | Date of Update |
+| ------------------------------------------------------------- | -------------- |
+| [[17-9-2025 - Starting to Implement Markov Chains & Regimes]] | 17/9/2025      |
+| [[20-9-2025 - Improved Back Testing Analytics]]               | 20/9/2025      |
+| [[24-9-2025 - Variable vs Fixed Volatility]]                  | 24/9/2025      |
+| [[27-9-2025 - Markov Switching Code Implementation]]          | 27/9/2025      |
 
 
 

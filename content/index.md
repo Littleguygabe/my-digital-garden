@@ -14,8 +14,9 @@ See my [[Projects Directory]] to explore what I've been working on.
 
 ## All Project Updates
 
-| Project Name                          | Update Name                                       | Date of Update |
-| ------------------------------------- | ------------------------------------------------- | -------------- |
-| [[Stocks & Shares Trading Algorithm]] | [[Starting to Implement Markov Chains & Regimes]] | 17/9/2025      |
-| [[Stocks & Shares Trading Algorithm]] | [[Improved Back Testing Analytics]]               | 20/9/2025      |
-| [[Stocks & Shares Trading Algorithm]] | [[Variable vs Fixed Volatility]]                  | 24/9/2025      |
+| Project Name                          | Update Name                                                   | Date of Update |
+| ------------------------------------- | ------------------------------------------------------------- | -------------- |
+| [[Stocks & Shares Trading Algorithm]] | [[17-9-2025 - Starting to Implement Markov Chains & Regimes]] | 17/9/2025      |
+| [[Stocks & Shares Trading Algorithm]] | [[20-9-2025 - Improved Back Testing Analytics]]               | 20/9/2025      |
+| [[Stocks & Shares Trading Algorithm]] | [[24-9-2025 - Variable vs Fixed Volatility]]                  | 24/9/2025      |
+| [[Stocks & Shares Trading Algorithm]] | [[27-9-2025 - Markov Switching Code Implementation]]          | 27/9/2025      |
