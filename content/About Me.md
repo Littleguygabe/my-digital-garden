@@ -8,6 +8,7 @@ I'm currently searching and applying for internships in quantitative finance (sp
 You can find my resumes through the following links
 1. [[Quantitative Researcher]]
 2. [[Software Engineering]]
+3. [[Risk Analyst]]
 
 ## Projects
 My most recent project - aside from coursework being set by university - has been based on improving my resume for internship applications so they've all been largely based around finance and finding meaningful patterns within stock data. You can find all the documents about my projects in the [[Projects Directory]]
