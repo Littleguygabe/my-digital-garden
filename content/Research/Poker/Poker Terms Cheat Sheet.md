@@ -1,4 +1,4 @@
-**A list of 50 poker terms and what they mean**
+**A list of poker terms and what they mean**
 
 **Fundamentals**
 Hand of poker - each individual round
@@ -23,7 +23,5 @@ Walk - player in the big blind wins the pot because everyone else folds pre-flop
 
 **Betting Streets**
 Street - each stage of a hand where there is betting
-	Pre-flop - all cards are dealt but no community cards are known
-	Flop - first 3 com
 
 
