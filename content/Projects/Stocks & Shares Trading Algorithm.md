@@ -1,3 +1,5 @@
+[**Github Link**](https://github.com/Littleguygabe/market-trading-algorithm)
+
 This program has been in the works since February 2025 when I began developing my first simple trading algorithm that just used basic pre-defined indicators combined with a relatively shallow ANN to try and predict the next days's close price for a given stock. This attempt was in-conclusive and couldn't produce any meaningful results.
 
 ### The Simpler Approach
@@ -20,6 +22,8 @@ I've now switched to using markov chains and regimes, however this method is sti
 | [[20-9-2025 - Improved Back Testing Analytics]]               | 20/9/2025      |
 | [[24-9-2025 - Variable vs Fixed Volatility]]                  | 24/9/2025      |
 | [[27-9-2025 - Markov Switching Code Implementation]]          | 27/9/2025      |
+| [[3-10-2025 - Regression Code]]                               | 3/10/2025      |
+| [[6-10-2025 - MS-AR Implementation]]                          | 6/10/2025      |
 
 
 
