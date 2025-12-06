@@ -5,3 +5,4 @@ title: List of Projects
 | ------------------------------------- | ---------- | ----------- |
 | [[Heat map Options Pricer]]           | 14/7/2025  | 10/8/2025   |
 | [[Stocks & Shares Trading Algorithm]] | 12/2024    | In Progress |
+| [[PCA & Statistical Arbitrage]]       | 1/12/2025  | In Progress |
