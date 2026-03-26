@@ -6,7 +6,7 @@ I'm a year Computer Science student studying Computer Science with Artificial In
 
 I'm currently searching and applying for internships in quantitative finance (specifically research), risk management and most AI based fields - such as AI architect, researcher, etc.
 You can find my resume through the following links
-1. [[Quantitative Researcher]]
+1. [Resume](./Resumes/Resume.md)
 
 ## Projects
 My most recent project - aside from coursework being set by university - has been based on improving my resume for internship applications so they've all been largely based around finance and finding meaningful patterns within stock data. You can find all the documents about my projects in the [[Projects Directory]]
