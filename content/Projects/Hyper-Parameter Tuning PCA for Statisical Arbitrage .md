@@ -237,7 +237,9 @@ However these values later change as we use hyper-parameter tuning to optimise t
 
 To calculate the Z-score of the current data, we use the return residuals over a specific rolling window. Let $\epsilon_t$ be the return residual at time $t$, and let $W$ represent the size of our rolling window. First, calculate the rolling mean ($\mu_t$) of the residuals:$$\mu_t = \frac{1}{W} \sum_{i=0}^{W-1} \epsilon_{t-i}$$
 
-Next, calculate the rolling standard deviation ($\sigma_t$) of the residuals:$$\sigma_t = \sqrt{\frac{1}{W} \sum_{i=0}^{W-1} (\epsilon_{t-i} - \mu_t)^2}$$
+Next, calculate the rolling standard deviation ($\sigma_t$) of the residuals:
+
+$$\sigma_t = \sqrt{\frac{1}{W} \sum_{i=0}^{W-1} (\epsilon_{t-i} - \mu_t)^2}$$
 
 Next, calculate the current Z-score ($Z_t$), which determines exactly how many standard deviations the current residual is from the rolling average:$$Z_t = \frac{\epsilon_t - \mu_t}{\sigma_t}$$
 
