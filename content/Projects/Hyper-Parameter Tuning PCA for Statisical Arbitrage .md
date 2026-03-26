@@ -2,10 +2,10 @@
 
 [**Github Link**](https://github.com/Littleguygabe/algo-trading)
 
-This is my first *(somewhat)* working trading algorithm, at a high level it uses Principle Component Analysis to identify, take and then hedge positions on assets - from a pre-defined basket - that it believes are mispriced according to statistics and past relationships with other stocks in the basket. However this diverges from being just statistical arbitrage in the way we decide the actual parameters to use because typically we have some parameters to hard code into the system:
+This is my first *(somewhat)* working trading algorithm, at a high level it uses principal Component Analysis to identify, take and then hedge positions on assets - from a pre-defined basket - that it believes are mispriced according to statistics and past relationships with other stocks in the basket. However this diverges from being just statistical arbitrage in the way we decide the actual parameters to use because typically we have some parameters to hard code into the system:
 
 1. Window Size for PCA ($m$)
-2. Number of principle components to use ($k$)
+2. Number of principal components to use ($k$)
 3. Z-Score threshold for entering a position ($z_{entry}$)
 4. Z-Score threshold for exiting a position ($z_{exit}$)
 
@@ -105,9 +105,9 @@ $$Z \in \mathbb{R}^{m \times n}$$
 
 We then perform PCA on Z to obtain the eigenvalues and eigenvectors (eigen-portfolios).
 
-This is the point in the program where we need to decide how many principle components ($k$) that we want to use, which presents a relatively complex optimisation problem because say we use $n$ principle components then yes this would explain all of the variance in price however it also picks up on idiosyncratic noise (small per-stock factors) so we won’t be able to find a large enough spread on the residuals to trade. On the flip side though if we only use 1 principle component then this will likely result in us just mapping the market beta and as a result we won’t be able to find any opportunities for an arbitrage strategy.
+This is the point in the program where we need to decide how many principal components ($k$) that we want to use, which presents a relatively complex optimisation problem because say we use $n$ principal components then yes this would explain all of the variance in price however it also picks up on idiosyncratic noise (small per-stock factors) so we won’t be able to find a large enough spread on the residuals to trade. On the flip side though if we only use 1 principal component then this will likely result in us just mapping the market beta and as a result we won’t be able to find any opportunities for an arbitrage strategy.
 
-So to find the solution to this optimisation problem I simply gave the hyper-parameter tuner a range of values for both the number of principle components $k$ and the window size $m$ and chose the pairing that gave the best sharpe ratio where:
+So to find the solution to this optimisation problem I simply gave the hyper-parameter tuner a range of values for both the number of principal components $k$ and the window size $m$ and chose the pairing that gave the best sharpe ratio where:
 
 - $3 \le k \le 13$
 - $300 \le m \le 501$
@@ -123,7 +123,7 @@ $$3 \cdot n_{assets} \le m \le 5 \cdot n_{assets}$$
 
 #### 1. Scree Plot (Elbow Method)
 
-We plot the each principle component ($k$) on the X-axis against the individual amount of variance (eigenvalue, $\lambda$) that is explains on the Y-axis. Then we look to see where the curve generated starts to taper out (ie finding the 'Elbow') which is the point where adding another principle component only explains a minimal amount of variance. This means that any components from this point are are just explaining idiosyncratic noise in the financial data rather than market factors, so we cut off $k$ at that point.
+We plot the each principal component ($k$) on the X-axis against the individual amount of variance (eigenvalue, $\lambda$) that is explains on the Y-axis. Then we look to see where the curve generated starts to taper out (ie finding the 'Elbow') which is the point where adding another principal component only explains a minimal amount of variance. This means that any components from this point are are just explaining idiosyncratic noise in the financial data rather than market factors, so we cut off $k$ at that point.
 
 #### 2. Cumulative Variance Threshold
 
@@ -136,9 +136,9 @@ $$\text{Stock} = \text{Explained by PCA} + \text{Residual}(\epsilon)$$
 The other thing to note though is that we don't want to explain too little variance with PCA because otherwise we begin to introduce higher levels of risk into our strategy, so ideally we want to find that sweet spot of being structured for safety but having enough noise to be profitable.This approach is relatively easy to implement into code though because we just follow the formula:
 $$\frac{\sum_{i=1}^{k} \lambda_i}{\sum_{j=1}^{n} \lambda_j} \geq \text{Threshold}$$
 
-- $k$: the number of principle components
+- $k$: the number of principal components
 - $n$: total number of stocks in our basket
-- $\lambda$: the eigenvalues (principle components) generated from PCA
+- $\lambda$: the eigenvalues (principal components) generated from PCA
 
 #### 3. Marchenko-Pastur Distribution Theory (Random Matrix Theory)
 
@@ -224,4 +224,107 @@ It is precisely this residual $\hat{\boldsymbol{\epsilon}}_i$ that we monitor fo
 
 ## 5. Z-Score Thresholding
 
-*Coming soon*
+Ok, so we now have the residual $\hat{\boldsymbol{\epsilon}}$ we need to establish how we actually convert this into a trading signal for either entering or exiting a position.
+
+For finding a entry we are trying to identify a stock that is unusually far from where we would expect it to be, the keyword here being unusually, because we always expect some level of idiosyncratic noise. So we just need to find a residual so large that we can statistically say it's not just idiosyncratic noise.
+
+Then once the stock's residual reduces back to a normal level that's exactly when we want to exit our position as the price has now reverted back to the mean level of idiosyncratic noise - why we need the mean-reversion assumption. So we just need to define what is a 'normal' level of idiosyncratic noise.
+
+So as a general baseline we take:
+$$z_{entry} = 2 \\z_{exit} = 0.25$$
+
+However these values later change as we use hyper-parameter tuning to optimise the parameters using the sharpe ratio as our cost function.
+
+To calculate the Z-score of the current data, we use the return residuals over a specific rolling window. Let $\epsilon_t$ be the return residual at time $t$, and let $W$ represent the size of our rolling window. First, calculate the rolling mean ($\mu_t$) of the residuals:$$\mu_t = \frac{1}{W} \sum_{i=0}^{W-1} \epsilon_{t-i}$$
+
+Next, calculate the rolling standard deviation ($\sigma_t$) of the residuals:$$\sigma_t = \sqrt{\frac{1}{W} \sum_{i=0}^{W-1} (\epsilon_{t-i} - \mu_t)^2}$$
+
+Next, calculate the current Z-score ($Z_t$), which determines exactly how many standard deviations the current residual is from the rolling average:$$Z_t = \frac{\epsilon_t - \mu_t}{\sigma_t}$$
+
+Finally we can now decide if we actually want to put a position on based on the current asset we're looking at:
+
+- $|Z_t| \geq z_{\text{entry}}$ - This gives us our signal to enter a position in one of 2 directions:
+    1. $Z_t \lt 0$ -  The stock is underpriced, so we go long on the stock expecting it's value to go **up** towards the mean.
+    1. $Z_t \gt 0$ - The stock is overpriced, so we short the stock expecting it's value to return down towards the mean.
+
+- $|Z_t| \leq z_{\text{exit}}$ - This gives us our signal to unwind a position as the residual has moved back to it's usual values.
+
+## 6. Trading our Signals
+
+Now we have everything we need to actually be able to start trading, how do we actually trade the strategy?
+
+### 1. Position Entry
+
+As mentioned above this is just dictated by Z-score of the residual of one of our assets on a given day, so once we have a $|Z_t| \gt z_{entry}$ we make the call to either long or short that given asset.
+
+### 2. Setting up the Position
+
+If we just either went short or long on our stock this isn't true arbitrage, it's just a direction bet that some asset is going to eventually mean revert, so to make this closer to true arbitrage (this strategy will never be true arbitrage as fat-tail events will always exist so we'll never to be truly risk free) we need to find a way to hedge our position.
+
+This is done by creating what we call a **replicating portfolio** which is essentially making a combination of all the other stocks in our tradeable universe that replicates the returns of the stock we want to trade. Then that means we can just take an opposite position on this portfolio, ie our target stock's returns go up, the replicating portfolio goes down so we stay neutral, which allows us to just trade the noise.
+
+So how do we make this replicating portfolio?
+
+### 3. Building the Replicating Portfolio
+
+#### Finding the Hedge Ratios
+
+Conveniently this can be done quite naturally using the same matrices that we already calculated for the initial residual calculation. If you remember we have a couple of main matrices which can be used again:
+
+- $V_k$ - This is our eigenvectors from [step 3](#3-calculating-factor-returns) representing how much each stock in our basket contributes to a given factor's returns
+- $B$ - These are the beta weights we calcualted during [step 4](#4-statistical-arbitrage-regression) which show how much each factor contributes to each stock's returns.
+
+To determine the exact quantity of each stock to trade as a hedge, we calculate the dot product of our two input matrices ($V_k$ and $B$). In the resulting matrix, each row represents the specific replicating portfolio required to hedge the stock associated with that row.
+
+Mathematically, this is expressed as:
+$$V_h = V_k \cdot B$$
+
+Where:
+
+- $V_h \in \mathbb{R}^{n \times n}$ is the resulting matrix of hedge ratios.
+- $V_k$ and $B$ are the component matrices being multiplied.
+- Each row $i$ in $V_h$ dictates the weights of the assets needed to form the replicating portfolio for stock $i$.
+
+
+Now as you might've noticed, $V_k$ is a $ k \cdot n$ matrix showing how we go from asset returns to factor returns and $B$ is a $n \cdot k$ matrix showing how we go from factor returns to asset returns. So instead of having to re-calculate the beta coefficients and perform linear regression everytime we want to hedge a trade we can actually take the transposition of our eigenvectors $V_k^T$ as our beta coefficients $B$, hence:
+
+$$ v_{i,j} = u_{j,i} $$
+
+Where:
+
+- $v_{i,j}$ is the value at $(i,j) \in V_k^T$
+- $u_{j,i}$ is the value at $(j,i) \in B$
+
+#### Removing the Target Stock From its own Hedge
+
+However this isn't quite the final step, although we have our hedge weights for each stock in the basket in terms of every stock in the basket, it means that these hedge ratios also tell us how much of our target stock we need to trade to hedge against our target stock, so we can have a scenario of saying for every 1 unit bought of stock A, the hedge we sell 1 unit of stock A which obviously doesn't work.
+
+So to combat this we just have to use some scaling, for a given set of hedge ratios (row) in $V_h$ we look at the amount of our target stock we have to hedge against itself $x$ and then we simply divide all other values by $1 - x$ so that they now carry all the weight for the hedge.
+
+For example:
+Imagine the replicating portfolio says that 100% of $AAPL$'s price movement can be reconstructed like this:
+
+- 20% is explained by $AAPL$ itself
+- 80% is explained by other assets in our universe
+
+If we want to build a replicating portfolio for $AAPL$ using only other stocks we run into a problem, our mix of other stocks only gives us 80% of the coverage of $AAPL$'s returns. So if we just get rid of $AAPL$ from our replicating portfolio we have a hedge that is only 80% the size it should be - so we aren't really hedged.
+
+So we need to inflate that remaining 80% to cover the full 100%.
+
+Scaling that 0.8 (80%) is fairly trivial, as we just need to answer *'How do we turn 0.8 into 1.0?'*. This is achieved by simply dividing by 0.8, which comes from $1 -$ our target stock's ($AAPL$) hedge weight.
+
+Because our hedge ratio matrix $V_h$ dictates how much of one stock is used to hedge another, the diagonal elements of this matrix, $(V_h)_{i,i}$, represent how much of stock $i$ is used to hedge itself. To mathematically remove this self-weight, we create a scaling vector $S$ where each element is defined as:
+
+$$S_i = 1 - (V_h)_{i,i}$$
+
+We then set the diagonal elements of our matrix to zero ($(V_h)_{i,i} = 0$) and divide each row $i$ of $V_h$ by its corresponding scaling factor $S_i$. This scales our remaining hedge ratios, mathematically expressed as $\frac{(V_h)_{i,j}}{S_i}$ for all $j \neq i$, ensuring the replicating portfolio provides full coverage without including the target stock in its own hedge.
+
+### 4. Finally Trading
+
+Now we truly have everything we need to execute a trade. Let $x$ represent the quantity of the target asset we want to trade, and let $W_i$ be the vector of our scaled hedge ratios for that specific target asset. 
+
+To determine the exact position sizes for our hedging basket, denoted as $P_i$, we multiply our hedge ratio vector by $-x$:
+
+$$P_i = -x \cdot W_i$$
+
+The negative sign ensures we take an opposing position in the replicating portfolio (e.g., shorting the basket) to properly hedge our long position of size $x$ in the target asset. Finally, we execute the trades based on the values in $P_i$.
