@@ -236,7 +236,9 @@ $$z_{entry} = 2 \\z_{exit} = 0.25$$
 
 However these values later change as we use hyper-parameter tuning to optimise the parameters using the sharpe ratio as our cost function.
 
-To calculate the Z-score of the current data, we use the return residuals over a specific rolling window. Let $\epsilon_t$ be the return residual at time $t$, and let $W$ represent the size of our rolling window. First, calculate the rolling mean ($\mu_t$) of the residuals:$$\mu_t = \frac{1}{W} \sum_{i=0}^{W-1} \epsilon_{t-i}$$
+To calculate the Z-score of the current data, we use the return residuals over a specific rolling window. Let $\epsilon_t$ be the return residual at time $t$, and let $W$ represent the size of our rolling window. First, calculate the rolling mean ($\mu_t$) of the residuals:
+
+$$\mu_t = \frac{1}{W} \sum_{i=0}^{W-1} \epsilon_{t-i}$$
 
 Next, calculate the rolling standard deviation ($\sigma_t$) of the residuals:
 
