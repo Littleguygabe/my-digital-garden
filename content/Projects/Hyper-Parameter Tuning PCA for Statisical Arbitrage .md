@@ -253,11 +253,11 @@ Finally we can now decide if we actually want to put a position on based on the 
 
 Now we have everything we need to actually be able to start trading, how do we actually trade the strategy?
 
-### 1. Position Entry
+### Position Entry
 
 As mentioned above this is just dictated by Z-score of the residual of one of our assets on a given day, so once we have a $|Z_t| \gt z_{entry}$ we make the call to either long or short that given asset.
 
-### 2. Setting up the Position
+### Setting up the Position
 
 If we just either went short or long on our stock this isn't true arbitrage, it's just a direction bet that some asset is going to eventually mean revert, so to make this closer to true arbitrage (this strategy will never be true arbitrage as fat-tail events will always exist so we'll never to be truly risk free) we need to find a way to hedge our position.
 
@@ -265,7 +265,7 @@ This is done by creating what we call a **replicating portfolio** which is essen
 
 So how do we make this replicating portfolio?
 
-### 3. Building the Replicating Portfolio
+### Building the Replicating Portfolio
 
 #### Finding the Hedge Ratios
 
@@ -319,7 +319,7 @@ $$S_i = 1 - (V_h)_{i,i}$$
 
 We then set the diagonal elements of our matrix to zero ($(V_h)_{i,i} = 0$) and divide each row $i$ of $V_h$ by its corresponding scaling factor $S_i$. This scales our remaining hedge ratios, mathematically expressed as $\frac{(V_h)_{i,j}}{S_i}$ for all $j \neq i$, ensuring the replicating portfolio provides full coverage without including the target stock in its own hedge.
 
-### 4. Finally Trading
+### Finally Trading
 
 Now we truly have everything we need to execute a trade. Let $x$ represent the quantity of the target asset we want to trade, and let $W_i$ be the vector of our scaled hedge ratios for that specific target asset. 
 
