@@ -231,6 +231,7 @@ For finding a entry we are trying to identify a stock that is unusually far from
 Then once the stock's residual reduces back to a normal level that's exactly when we want to exit our position as the price has now reverted back to the mean level of idiosyncratic noise - why we need the mean-reversion assumption. So we just need to define what is a 'normal' level of idiosyncratic noise.
 
 So as a general baseline we take:
+
 $$z_{entry} = 2 \\z_{exit} = 0.25$$
 
 However these values later change as we use hyper-parameter tuning to optimise the parameters using the sharpe ratio as our cost function.
@@ -241,7 +242,9 @@ Next, calculate the rolling standard deviation ($\sigma_t$) of the residuals:
 
 $$\sigma_t = \sqrt{\frac{1}{W} \sum_{i=0}^{W-1} (\epsilon_{t-i} - \mu_t)^2}$$
 
-Next, calculate the current Z-score ($Z_t$), which determines exactly how many standard deviations the current residual is from the rolling average:$$Z_t = \frac{\epsilon_t - \mu_t}{\sigma_t}$$
+Next, calculate the current Z-score ($Z_t$), which determines exactly how many standard deviations the current residual is from the rolling average:
+
+$$Z_t = \frac{\epsilon_t - \mu_t}{\sigma_t}$$
 
 Finally we can now decide if we actually want to put a position on based on the current asset we're looking at:
 
